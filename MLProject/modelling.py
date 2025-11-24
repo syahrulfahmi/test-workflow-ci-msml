@@ -54,6 +54,7 @@ X_test_pad = pad_sequences(X_test_seq, maxlen=max_len, padding='post', truncatin
 
 print("Vocab size:", vocab_size)
 
+
 def build_lstm_model():
     model_sequential = Sequential([
         Embedding(input_dim=vocab_size, output_dim=embedding_dim, input_length=max_len),
@@ -87,28 +88,29 @@ input_example = X_train_pad[:5]
 
 now = datetime.now().strftime("%Y%m%d_%H%M%S")
 
-with mlflow.start_run(nested=True):
-    mlflow.autolog()
+# with mlflow.start_run(nested=True):
+mlflow.autolog()
 
-    mlflow.log_param("embedding_dim", embedding_dim)
-    mlflow.log_param("lstm_units", 128)
-    mlflow.log_param("max_words", max_words)
-    mlflow.log_param("max_len", max_len)
-    mlflow.log_param("num_classes", num_classes)
+mlflow.log_param("embedding_dim", embedding_dim)
+mlflow.log_param("lstm_units", 128)
+mlflow.log_param("max_words", max_words)
+mlflow.log_param("max_len", max_len)
+mlflow.log_param("num_classes", num_classes)
 
-    history = model.fit(
-        X_train_pad, y_train_lstm,
-        validation_split=0.1,
-        epochs=20,
-        batch_size=128,
-        callbacks=[es],
-        verbose=1
-    )
+history = model.fit(
+    X_train_pad, y_train_lstm,
 
-    mlflow.sklearn.log_model(
-        sk_model=model,
-        artifact_path="model",
-        input_example=input_example
-    )
+    validation_split=0.1,
+    epochs=20,
+    batch_size=128,
+    callbacks=[es],
+    verbose=1
+)
 
-print("\nSelesai Train Model")
+mlflow.sklearn.log_model(
+    sk_model=model,
+    artifact_path="model",
+    input_example=input_example
+)
+
+# print("\nSelesai Train Model")
