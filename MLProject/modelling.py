@@ -93,7 +93,7 @@ if __name__ == "__main__":
         mlflow.log_param("num_classes", num_classes)
 
         mlflow.tensorflow.log_model(
-            tf_model=model,
+            model=model,
             artifact_path="model",
             input_example=input_example
         )
