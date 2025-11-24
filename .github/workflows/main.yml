@@ -30,6 +30,12 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: "3.12.7"
+
+      # clear mlflow run env
+      - name: Clear MLflow env
+        run: |
+          echo "MLFLOW_RUN_ID=" >> $GITHUB_ENV
+          echo "MLFLOW_EXPERIMENT_ID=" >> $GITHUB_ENV
       
       # Check Env Variables
       - name: Check Env
