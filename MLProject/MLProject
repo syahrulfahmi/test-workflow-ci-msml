@@ -20,4 +20,4 @@ entry_points:
       --max_len {max_len} \
       --batch_size {batch_size} \
       --epochs {epochs} \
-      --learning_rate {learning_rate}
+      --learning_rate {learning_rate}"
