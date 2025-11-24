@@ -48,7 +48,7 @@ jobs:
         run: |
           mlflow run . --env-manager=local \
             --experiment-name "Sentiment LSTM Experiment" \
-            -P data_path=MLProject/ulasan_processed_dataset.csv
+            -P data_path=ulasan_processed_dataset.csv
         # mlflow run MLProject --env-manager=local 
           
       - name: Get latest MLflow run_id
