@@ -61,7 +61,7 @@ with mlflow.start_run(run_name=run_name):
 
     # Log model explicitly (opsional karena autolog sudah log model)
     mlflow.tensorflow.log_model(
-        tf_model=model,
+        model=model,
         artifact_path="model",
         input_example=input_example
     )
