@@ -13,13 +13,7 @@ from tensorflow.keras.callbacks import EarlyStopping
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
 
-# dagshub.init(repo_owner='syahrulfahmi', repo_name='mlsystem-submission-syahrul-fahmi', mlflow=True)
-
 if __name__ == "__main__":
-
-    # mlflow.set_tracking_uri(os.getenv("MLFLOW_TRACKING_URI"))
-    # mlflow.set_experiment("Build Model with LSTM")
-
     # load data
     BASE_DIR = os.path.dirname(os.path.abspath(__file__))
     csv_path = os.path.join(BASE_DIR, "ulasan_processed_dataset.csv")
@@ -54,6 +48,7 @@ if __name__ == "__main__":
     X_test_pad = pad_sequences(X_test_seq, maxlen=max_len, padding='post', truncating='post')
 
     print("Vocab size:", vocab_size)
+
 
     def build_lstm_model():
         model_sequential = Sequential([
@@ -97,19 +92,19 @@ if __name__ == "__main__":
         mlflow.log_param("max_len", max_len)
         mlflow.log_param("num_classes", num_classes)
 
-        history = model.fit(
+        mlflow.tensorflow.log_model(
+            tf_model=model,
+            artifact_path="model",
+            input_example=input_example
+        )
+
+        model.fit(
             X_train_pad, y_train_lstm,
             validation_split=0.1,
             epochs=20,
             batch_size=128,
             callbacks=[es],
             verbose=1
-        )
-
-        mlflow.sklearn.log_model(
-            sk_model=model,
-            artifact_path="model",
-            input_example=input_example
         )
 
     print("\nSelesai Train Model")
