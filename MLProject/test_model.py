@@ -1,7 +1,4 @@
-# file: train_test_model.py
-import mlflow
 import mlflow.tensorflow
-import tensorflow as tf
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Dropout
 from sklearn.datasets import make_classification
@@ -39,8 +36,6 @@ model = build_model(input_dim=X_train.shape[1], num_classes=len(np.unique(y)))
 # ======================
 # Setup MLflow
 # ======================
-mlflow.set_tracking_uri("https://dagshub.com/YOUR_USERNAME/YOUR_REPO.mlflow")
-mlflow.set_experiment("Test_DL_Model")
 
 now = datetime.now().strftime("%Y%m%d_%H%M%S")
 run_name = f"dl_test_run_{now}"
