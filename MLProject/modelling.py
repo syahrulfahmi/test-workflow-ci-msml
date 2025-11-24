@@ -17,8 +17,8 @@ from sklearn.preprocessing import LabelEncoder
 
 if __name__ == "__main__":
 
-    mlflow.set_tracking_uri(os.getenv("MLFLOW_TRACKING_URI"))
-    mlflow.set_experiment("Build Model with LSTM")
+    # mlflow.set_tracking_uri(os.getenv("MLFLOW_TRACKING_URI"))
+    # mlflow.set_experiment("Build Model with LSTM")
 
     # load data
     BASE_DIR = os.path.dirname(os.path.abspath(__file__))
