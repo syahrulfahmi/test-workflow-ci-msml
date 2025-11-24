@@ -16,7 +16,7 @@ from sklearn.preprocessing import LabelEncoder
 
 dagshub.init(repo_owner='syahrulfahmi', repo_name='mlsystem-submission-syahrul-fahmi', mlflow=True)
 
-mlflow.set_tracking_uri("https://dagshub.com/syahrulfahmi/mlsystem-submission-syahrul-fahmi.mlflow")
+mlflow.set_tracking_uri(os.getenv("MLFLOW_TRACKING_URI"))
 mlflow.set_experiment("Build Model with LSTM")
 
 # load data
