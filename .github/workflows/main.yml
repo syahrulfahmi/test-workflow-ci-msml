@@ -13,9 +13,9 @@ permissions:
  
 env:
   CSV_URL: "text-workflow-ci-msml/ulasan_processed_dataset.csv"
-  MLFLOW_TRACKING_URI     : "https://dagshub.com/${{ secrets.DAGSHUB_USERNAME }}/mlsystem-submission-syahrul-fahmi.mlflow"
-  MLFLOW_TRACKING_USERNAME: "${{ secrets.DAGSHUB_USERNAME }}"
-  MLFLOW_TRACKING_PASSWORD: "${{ secrets.DAGSHUB_TOKEN }}"
+#  MLFLOW_TRACKING_URI     : "https://dagshub.com/${{ secrets.DAGSHUB_USERNAME }}/mlsystem-submission-syahrul-fahmi.mlflow"
+#  MLFLOW_TRACKING_USERNAME: "${{ secrets.DAGSHUB_USERNAME }}"
+#  MLFLOW_TRACKING_PASSWORD: "${{ secrets.DAGSHUB_TOKEN }}"
  
 jobs:
   build:
@@ -35,21 +35,25 @@ jobs:
       - name: Check Env
         run: |
           echo $CSV_URL
-          echo $MLFLOW_TRACKING_URI
+#          echo $MLFLOW_TRACKING_URI
  
       # Install mlflow
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install mlflow dagshub tensorflow
+          pip install mlflow tensorflow
+
+      # setup dagshub auth
+#      - name: Set DagsHub Auth
+#        run: |
+#         echo "MLFLOW_TRACKING_USERNAME=${{ secrets.DAGSHUB_USERNAME }}" >> $GITHUB_ENV
+#         echo "MLFLOW_TRACKING_PASSWORD=${{ secrets.DAGSHUB_TOKEN }}" >> $GITHUB_ENV
+#         echo "MLFLOW_TRACKING_URI=https://dagshub.com/${{ secrets.DAGSHUB_USERNAME }}/mlsystem-submission-syahrul-fahmi.mlflow" >> $GITHUB_ENV
       
       # Run as a mlflow project
       - name: Run mlflow project
         run: |
-          mlflow run MLProject --env-manager=local \
-            --experiment-name "Sentiment LSTM Experiment" \
-            -P data_path=ulasan_processed_dataset.csv
-        # mlflow run MLProject --env-manager=local 
+          mlflow run MLProject --env-manager=local 
           
       - name: Get latest MLflow run_id
         run: |
