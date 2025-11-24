@@ -2,6 +2,7 @@ import mlflow
 import dagshub
 import pandas as pd
 import tensorflow as tf
+import os
 
 from datetime import datetime
 from tensorflow.keras.models import Sequential
@@ -18,7 +19,10 @@ dagshub.init(repo_owner='syahrulfahmi', repo_name='mlsystem-submission-syahrul-f
 mlflow.set_tracking_uri("https://dagshub.com/syahrulfahmi/mlsystem-submission-syahrul-fahmi.mlflow")
 mlflow.set_experiment("Build Model with LSTM")
 
-df = pd.read_csv("ulasan_processed_dataset.csv")
+# load data
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+csv_path = os.path.join(BASE_DIR, "ulasan_processed_dataset.csv")
+df = pd.read_csv(csv_path)
 
 le = LabelEncoder()
 df['label'] = le.fit_transform(df['polarity'])
