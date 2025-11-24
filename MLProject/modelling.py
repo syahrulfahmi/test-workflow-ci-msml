@@ -87,7 +87,7 @@ input_example = X_train_pad[:5]
 
 now = datetime.now().strftime("%Y%m%d_%H%M%S")
 
-with (mlflow.start_run(run_name=f"build_lstm_{now}")):
+with (mlflow.start_run()):
     mlflow.autolog()
 
     mlflow.log_param("embedding_dim", embedding_dim)
