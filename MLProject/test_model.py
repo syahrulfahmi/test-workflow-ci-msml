@@ -50,9 +50,6 @@ if __name__ == "__main__":
     with mlflow.start_run(run_name=run_name):
         mlflow.tensorflow.autolog()
 
-        mlflow.log_param("epochs", 5)
-        mlflow.log_param("batch_size", 32)
-
         history = model.fit(
             X_train, y_train,
             validation_split=0.1,
