@@ -42,19 +42,17 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install mlflow tensorflow
-
       # setup dagshub auth
 #      - name: Set DagsHub Auth
 #        run: |
 #         echo "MLFLOW_TRACKING_USERNAME=${{ secrets.DAGSHUB_USERNAME }}" >> $GITHUB_ENV
 #         echo "MLFLOW_TRACKING_PASSWORD=${{ secrets.DAGSHUB_TOKEN }}" >> $GITHUB_ENV
 #         echo "MLFLOW_TRACKING_URI=https://dagshub.com/${{ secrets.DAGSHUB_USERNAME }}/mlsystem-submission-syahrul-fahmi.mlflow" >> $GITHUB_ENV
-      
+
       # Run as a mlflow project
       - name: Run mlflow project
         run: |
-          mlflow run MLProject --env-manager=local 
-
+          mlflow run MLProject --env-manager=local
       - name: Get latest MLflow run_id
         run: |
           RUN_ID=$(ls -td mlruns/0/*/ | head -n 1 | cut -d'/' -f3)
@@ -87,10 +85,10 @@ jobs:
       #     docker push ${{ secrets.DOCKER_HUB_USERNAME }}/test-workflow-ci-msml:latest
 
       # # set github user
-      # - name: Set git user
-      #   run: |
-      #     git config --global user.name ${{ secrets.USERNAME }}
-      #     git config --global user.email ${{ secrets.EMAIL }}
+      - name: Set git user
+        run: |
+           git config --global user.name ${{ secrets.USERNAME }}
+           git config --global user.email ${{ secrets.EMAIL }}
 
       # set github lfs
       - name: Set up Git LFS
@@ -100,7 +98,6 @@ jobs:
            git add .gitattributes
            git commit -m "Track large files in mlruns with Git LFS" || true
            git push
-
       # Save models to GitHub Repository
       - name: Save mlruns to repo
         run: |

@@ -13,7 +13,7 @@ entry_points:
       epochs: {type: int, default: 20}
       learning_rate: {type: float, default: 0.001}
 
-    command: "python test_model.py \
+    command: "python modelling.py \
       --embedding_dim {embedding_dim} \
       --lstm_units {lstm_units} \
       --max_words {max_words} \
