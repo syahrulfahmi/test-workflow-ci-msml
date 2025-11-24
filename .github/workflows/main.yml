@@ -40,11 +40,11 @@ jobs:
           pip install mlflow dagshub tensorflow
 
       # setup dagshub auth
-      - name: Configure DagsHub Authentication
+      - name: Set DagsHub Auth
         run: |
-         export MLFLOW_TRACKING_USERNAME=${{ secrets.DAGSHUB_USERNAME }}
-         export MLFLOW_TRACKING_PASSWORD=${{ secrets.DAGSHUB_TOKEN }}
-         echo "DagsHub auth has been configured"
+         echo "MLFLOW_TRACKING_USERNAME=${{ secrets.DAGSHUB_USERNAME }}" >> $GITHUB_ENV
+         echo "MLFLOW_TRACKING_PASSWORD=${{ secrets.DAGSHUB_TOKEN }}" >> $GITHUB_ENV
+         echo "MLFLOW_TRACKING_URI=https://dagshub.com/${{ secrets.DAGSHUB_USERNAME }}/mlsystem-submission-syahrul-fahmi.mlflow" >> $GITHUB_ENV
       
       # Run as a mlflow project
       - name: Run mlflow project
