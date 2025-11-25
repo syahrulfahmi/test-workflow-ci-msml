@@ -1,9 +1,9 @@
+import joblib
 import mlflow
 import pandas as pd
 import tensorflow as tf
 import os
 
-from datetime import datetime
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Embedding, LSTM, Dense, Dropout, Bidirectional
 from tensorflow.keras.preprocessing.sequence import pad_sequences
@@ -13,7 +13,12 @@ from tensorflow.keras.callbacks import EarlyStopping
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
 
+
 if __name__ == "__main__":
+    # serve on local env
+    mlflow.set_tracking_uri("http://127.0.0.1:5000/")
+    mlflow.set_experiment("Build Model with LSTM")
+
     # load data
     BASE_DIR = os.path.dirname(os.path.abspath(__file__))
     csv_path = os.path.join(BASE_DIR, "ulasan_processed_dataset.csv")
@@ -40,6 +45,17 @@ if __name__ == "__main__":
     vocab_size = min(max_words, len(tokenizer.word_index) + 1)
     max_len = 100
     embedding_dim = 128
+
+    # save tokenizer
+    with open("tokenizer_lstm.joblib", "wb") as f:
+        joblib.dump(tokenizer, f)
+
+    # save label encoder
+    joblib.dump(le, "label_encoder.joblib")
+
+    # save max_len
+    joblib.dump(max_len, "max_len.joblib")
+
 
     X_train_seq = tokenizer.texts_to_sequences(X_train_lstm)
     X_test_seq = tokenizer.texts_to_sequences(X_test_lstm)
@@ -81,8 +97,6 @@ if __name__ == "__main__":
 
     input_example = X_train_pad[:5]
 
-    now = datetime.now().strftime("%Y%m%d_%H%M%S")
-
     with mlflow.start_run():
         mlflow.autolog()
 
@@ -92,13 +106,7 @@ if __name__ == "__main__":
         mlflow.log_param("max_len", max_len)
         mlflow.log_param("num_classes", num_classes)
 
-        mlflow.tensorflow.log_model(
-            model=model,
-            artifact_path="model",
-            input_example=input_example
-        )
-
-        model.fit(
+        history = model.fit(
             X_train_pad, y_train_lstm,
             validation_split=0.1,
             epochs=20,
@@ -106,5 +114,12 @@ if __name__ == "__main__":
             callbacks=[es],
             verbose=1
         )
+
+        mlflow.tensorflow.log_model(
+            model=model,
+            artifact_path="model",
+            input_example=input_example
+        )
+
 
     print("\nSelesai Train Model")
