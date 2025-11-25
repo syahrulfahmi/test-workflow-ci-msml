@@ -15,9 +15,6 @@ from sklearn.preprocessing import LabelEncoder
 
 
 if __name__ == "__main__":
-    # serve on local env
-    mlflow.set_tracking_uri("http://127.0.0.1:5000/")
-
     # load data
     BASE_DIR = os.path.dirname(os.path.abspath(__file__))
     csv_path = os.path.join(BASE_DIR, "ulasan_processed_dataset.csv")
